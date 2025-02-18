@@ -9,9 +9,6 @@ require('dotenv').config();
 const accountSid = process.env.TWILIO_ACCOUNT_SID;
 const authToken = process.env.TWILIO_AUTH_TOKEN;
 const client = twilio(accountSid, authToken);
-// const accountSid = 'AC4a73fcc11fbb8e53a6598899af7459a9';
-// const authToken = 'ec4d241a85b5144b74b9e44eec2e619e';
-// const client = twilio(accountSid, authToken);
 const bcrypt = require('bcrypt');
 
 const app = express();
