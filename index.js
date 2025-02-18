@@ -36,6 +36,18 @@ mongoose
   .catch(err => {
     console.log('Error connecting to MongoDb', err);
   });
+
+  app.get('/users', async (req, res) => {
+  
+    const user = await User.find();
+    if (user) {
+      return res.status(200).json({success: true, user});
+    }
+    console.log('myUser', user);
+  
+    return res.status(400).json({success: false});
+  });
+  
 app.post('/register', async (req, res) => {
   try {
     const {name, mobile, password, deviceId} = req.body;
