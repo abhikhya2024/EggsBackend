@@ -1,6 +1,6 @@
 const express = require('express');
+
 const bodyParser = require('body-parser');
-const mongoose = require('mongoose');
 const crypto = require('crypto');
 const nodemailer = require('nodemailer');
 const User = require('./models/user.model');
@@ -10,11 +10,16 @@ const accountSid = process.env.TWILIO_ACCOUNT_SID;
 const authToken = process.env.TWILIO_AUTH_TOKEN;
 const client = twilio(accountSid, authToken);
 const bcrypt = require('bcryptjs');
-
+const db = require('./config/db');
 const app = express();
 const port = 8000;
 const cors = require('cors');
 app.use(cors());
+app.use(express.json()); // For parsing application/json
+app.use(express.urlencoded({ extended: true })); // For parsing application/x-www-form-urlencoded
+
+const authRoutes = require('./routes/user.routes'); // Import auth routes
+app.use('/api/auth', authRoutes); // Set up the auth routes
 
 app.use(bodyParser.urlencoded({extended: false}));
 app.use(bodyParser.json());
@@ -25,17 +30,6 @@ app.listen(port, () => {
   console.log('Server is running on port 8000');
 });
 
-mongoose
-  .connect('mongodb+srv://abhikhya:ashi3666@cluster0.dyvke.mongodb.net/', {
-    useNewUrlParser: true,
-    useUnifiedTopology: true,
-  })
-  .then(() => {
-    console.log('Connected to MongoDB');
-  })
-  .catch(err => {
-    console.log('Error connecting to MongoDb', err);
-  });
 
   app.get('/users', async (req, res) => {
   
@@ -48,66 +42,7 @@ mongoose
     return res.status(400).json({success: false});
   });
   
-app.post('/register', async (req, res) => {
-  try {
-    const {name, mobile, password, deviceId} = req.body;
 
-    // Check if the mobile number is already registered
-    const existingUser = await User.findOne({mobile});
-    if (existingUser) {
-      return res
-        .status(400)
-        .json({message: 'Mobile number already registered'});
-    }
-
-    // Generate OTP
-    const otp = Math.floor(1000 + Math.random() * 9000); // 4-digit OTP
-
-    // Hash the password securely
-    const saltRounds = 10;
-    const hashedPassword = await bcrypt.hash(password, saltRounds);
-
-    // Create new user with hashed password and OTP
-    const newUser = new User({
-      name,
-      mobile,
-      password: hashedPassword,
-      deviceId,
-      otp,
-      verificationToken: crypto.randomBytes(20).toString('hex'),
-    });
-
-    // Save the user to the database
-    await newUser.save();
-    console.log('New User Registered:', newUser);
-
-    // Uncomment the following block if you are using Twilio
-    /*
-      try {
-        const message = await client.messages.create({
-          body: `Your verification code is: ${otp}`,
-          from: '+16202582352', // Your Twilio number
-          to: `+91${mobile}`, // Recipient's phone number with country code
-        });
-        console.log('SMS sent:', message.sid);
-      } catch (smsError) {
-        console.error('Error sending SMS:', smsError.message);
-      }
-      */
-
-    // ✅ Ensure response is sent even if Twilio fails
-    res.status(201).json({
-      message:
-        'Registration successful. Please check your phone for verification.',
-      userId: newUser._id,
-    });
-  } catch (error) {
-    console.error('Error during registration:', error);
-    res
-      .status(500)
-      .json({message: 'Registration failed', error: error.message});
-  }
-});
 
 app.post('/verify', async (req, res) => {
   const {mobile} = req.body;
