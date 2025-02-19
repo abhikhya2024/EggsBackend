@@ -125,6 +125,7 @@ exports.matchOtp=(async (req, res) => {
       } catch (error) {
         console.error('Error verifying password:', error);
       }
+      
   
       // Send verification SMS using Twilio
     } catch (error) {
