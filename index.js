@@ -119,34 +119,5 @@ app.post('/verifyOtp', async (req, res) => {
   return res.status(400).json({success: false});
 });
 
-app.post('/matchOtp', async (req, res) => {
-  const {otp} = req.body;
-  console.log('otp', otp);
 
-  const user = await User.findOne({otp});
-  if (user) {
-    return res.status(200).json({success: true, user});
-  }
-  console.log('myUser', user);
 
-  return res.status(400).json({success: false});
-});
-
-app.post('/createPin', async (req, res) => {
-  const {pin, deviceId} = req.body;
-  if (!deviceId || !pin) {
-    return res
-      .status(400)
-      .json({success: false, message: 'IMEI and pin are required'});
-  }
-  const user = await User.findOne({deviceId});
-
-  if (user) {
-    user.pin = pin;
-    await user.save();
-  }
-  if (user) {
-    return res.status(200).json({success: true, user});
-  }
-  return res.status(400).json({success: false});
-});
