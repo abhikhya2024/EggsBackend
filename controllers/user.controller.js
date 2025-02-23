@@ -35,14 +35,14 @@ exports.register = async (req, res) => {
       });
 
       // Save the user to the database
-      await newUser.save();
+      my_user =await newUser.save();
       console.log('New User Registered:', newUser);
 
       // ✅ Ensure response is sent even if Twilio fails
       res.status(201).json({
         message:
           'Registration successful. Please check your phone for verification.',
-        userId: newUser._id,
+        user: my_user,
       });
     } catch (error) {
       console.error('Error during registration:', error);

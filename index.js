@@ -17,6 +17,7 @@ const cors = require('cors');
 app.use(cors());
 app.use(express.json()); // For parsing application/json
 app.use(express.urlencoded({ extended: true })); // For parsing application/x-www-form-urlencoded
+app.use(cors({ origin: "*" })); // Allow all origins for testing
 
 const authRoutes = require('./routes/user.routes'); // Import auth routes
 app.use('/api/auth', authRoutes); // Set up the auth routes
