@@ -56,11 +56,11 @@ exports.matchOtp=(async (req, res) => {
   
     const user = await User.findOne({otp});
     if (user) {
-      return res.status(200).json({success: true, user});
+      return res.status(200).json({success: true, otpVerified: true});
     }
     console.log('myUser', user);
   
-    return res.status(400).json({success: false});
+    return res.status(400).json({success: false, otpVerified: false});
   });
   
   exports.createPin=(async (req, res) => {
