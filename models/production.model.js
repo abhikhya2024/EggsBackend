@@ -47,7 +47,7 @@ const productionSchema = new mongoose.Schema({
     type: Number
   },
   deviceId:{
-    type: Number
+    type: String
   }
 });
 
