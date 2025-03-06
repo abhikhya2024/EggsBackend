@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const { register, matchOtp, createPin, onPinLogin, passwordLogin} = require('../controllers/user.controller'); // Import the controller
+const { register, matchOtp, createPin, onPinLogin, passwordLogin, getDeviceId} = require('../controllers/user.controller'); // Import the controller
 
 // @route   POST /api/auth/login
 // @desc    Login user and get JWT token
@@ -10,6 +10,7 @@ router.post('/matchOtp', matchOtp);
 router.post('/createPin', createPin);
 router.post('/onPinLogin', onPinLogin);
 router.post('/passwordLogin', passwordLogin);
+router.get('/getDeviceId', getDeviceId);
 
 module.exports = router;
 

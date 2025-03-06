@@ -20,8 +20,9 @@ app.use(express.urlencoded({ extended: true })); // For parsing application/x-ww
 app.use(cors({ origin: "*" })); // Allow all origins for testing
 
 const authRoutes = require('./routes/user.routes'); // Import auth routes
+const productionRoutes = require('./routes/production.routes');
 app.use('/api/auth', authRoutes); // Set up the auth routes
-
+app.use('/api', productionRoutes)
 app.use(bodyParser.urlencoded({extended: false}));
 app.use(bodyParser.json());
 

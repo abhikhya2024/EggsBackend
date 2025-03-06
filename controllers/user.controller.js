@@ -133,3 +133,18 @@ exports.matchOtp=(async (req, res) => {
       res.status(500).json({message: 'Login failed'});
     }
   });
+
+  exports.getDeviceId=(async (req, res) => {
+    const {mobile} = req.body;
+    if (!mobile) {
+      return res
+        .status(400)
+        .json({success: false, message: 'Mobile number is required'});
+    }
+    const user = await User.findOne({mobile});
+    if (user) {
+      const deviceId = user.deviceId
+      return res.status(200).json({success: true, deviceId: deviceId, message: "Device id exists. User is verified"});
+    }
+    return res.status(400).json({success: false, deviceId: null, message: "Device id does not exist"});
+  });
