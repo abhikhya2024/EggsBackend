@@ -134,17 +134,17 @@ exports.matchOtp=(async (req, res) => {
     }
   });
 
-  exports.getDeviceId=(async (req, res) => {
-    const {mobile} = req.body;
-    if (!mobile) {
+  exports.getMobile=(async (req, res) => {
+    const {deviceId} = req.body;
+    if (!deviceId) {
       return res
         .status(400)
-        .json({success: false, message: 'Mobile number is required'});
+        .json({success: false, message: 'Device id is required'});
     }
-    const user = await User.findOne({mobile});
+    const user = await User.findOne({deviceId});
     if (user) {
-      const deviceId = user.deviceId
-      return res.status(200).json({success: true, deviceId: deviceId, message: "Device id exists. User is verified"});
+      const mobile = user.mobile
+      return res.status(200).json({success: true, mobile: mobile, message: "Device id exists. User is verified"});
     }
     return res.status(400).json({success: false, deviceId: null, message: "Device id does not exist"});
   });
