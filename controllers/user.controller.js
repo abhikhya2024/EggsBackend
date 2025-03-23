@@ -91,7 +91,7 @@ exports.matchOtp=(async (req, res) => {
       console.log('User:', user);
       if (user) {
         // If passwords match, generate a session or JWT token, and respond to the user
-        return res.status(200).json({success: true, message: 'Login successful'});
+        return res.status(200).json({success: true, loginSuccess: true, message: 'Login successful'});
       } else {
         // If passwords don't match, return an error
         return res.status(400).json({success: false, message: 'Invalid pin'});
