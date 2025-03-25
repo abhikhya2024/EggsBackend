@@ -19,6 +19,13 @@ app.use(express.json()); // For parsing application/json
 app.use(express.urlencoded({ extended: true })); // For parsing application/x-www-form-urlencoded
 app.use(cors({ origin: "*" })); // Allow all origins for testing
 
+// Swagger
+
+const swaggerUi = require('swagger-ui-express');
+const swaggerDocument = require('./swagger-output.json');
+
+app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
+
 const authRoutes = require('./routes/user.routes'); // Import auth routes
 const productionRoutes = require('./routes/production.routes');
 app.use('/api/auth', authRoutes); // Set up the auth routes

@@ -11,8 +11,8 @@ exports.createProduction = async (req, res) => {
           smallEggCount, damagedEggCount, temprature, humidity, gritsWeight, 
           suppliment, medecine, deviceId, mobile } = req.body;
 
-      const user = await User.findOne({ mobile, deviceId });
-
+      const user = await User.findOne({ deviceId });
+      
       if (user) {
           const prodData = new Production({ // ⬅ Change `User` to `Production`
               createdDate, bird, mortality, lightState, feedWeight, eggCount, 
